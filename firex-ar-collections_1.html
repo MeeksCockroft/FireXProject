@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FireX Protection Systems — AR Collections</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0f14;
+    --surface: #13181f;
+    --surface2: #1a2030;
+    --border: #252d3a;
+    --border-active: #e8320a;
+    --text: #eef0f3;
+    --muted: #6b7585;
+    --accent: #e8320a;
+    --accent-dim: rgba(232, 50, 10, 0.1);
+    --accent-mid: #ff4d25;
+    --success: #22c55e;
+    --success-dim: rgba(34, 197, 94, 0.1);
+    --warning: #f59e0b;
+    --warning-dim: rgba(245, 158, 11, 0.1);
+    --danger: #ef4444;
+    --danger-dim: rgba(239, 68, 68, 0.1);
+    --gold: #f59e0b;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* Top nav bar */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .logo-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .topbar-right {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse-green 2s infinite;
+  }
+
+  @keyframes pulse-green {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: rise 0.5s ease forwards;
+  }
+
+  .page-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .page-title span { color: var(--accent); }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: rise 0.5s ease 0.1s forwards;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .stat-value.red { color: var(--accent); }
+  .stat-value.yellow { color: var(--warning); }
+  .stat-value.green { color: var(--success); }
+  .stat-value.white { color: var(--text); }
+
+  /* FORM SECTION */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    opacity: 0;
+    animation: rise 0.5s ease forwards;
+  }
+
+  .section:nth-child(1) { animation-delay: 0.2s; }
+  .section:nth-child(2) { animation-delay: 0.3s; }
+
+  .section-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface2);
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 3px;
+    height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .section-body { padding: 24px; }
+
+  /* FORM */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 12px;
+    align-items: end;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+
+  label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  input, select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-dim);
+  }
+
+  select option { background: var(--surface); }
+
+  /* AGING BADGE */
+  .aging-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .aging-14 { background: var(--warning-dim); color: var(--warning); border: 1px solid var(--warning); }
+  .aging-21 { background: rgba(249,115,22,0.1); color: #f97316; border: 1px solid #f97316; }
+  .aging-30 { background: var(--danger-dim); color: var(--danger); border: 1px solid var(--danger); }
+  .aging-45 { background: rgba(220,38,38,0.15); color: #dc2626; border: 1px solid #dc2626; }
+  .aging-60 { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); }
+
+  /* ADD BUTTON */
+  .add-btn {
+    background: var(--accent);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 10px 20px;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .add-btn:hover { background: var(--accent-mid); }
+  .add-btn:active { transform: scale(0.97); }
+
+  /* INVOICE TABLE */
+  .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .invoice-table th {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .invoice-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .invoice-table tr:last-child td { border-bottom: none; }
+  .invoice-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .client-name { font-weight: 500; font-size: 14px; }
+  .invoice-num { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .amount { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 600; }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .remove-btn:hover { color: var(--accent); background: var(--accent-dim); }
+
+  /* GENERATE */
+  .generate-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: rise 0.5s ease 0.4s forwards;
+  }
+
+  .generate-info { font-size: 13px; color: var(--muted); }
+  .generate-count { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+
+  .generate-btn {
+    background: var(--accent);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 12px 28px;
+    transition: background 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .generate-btn:hover { background: var(--accent-mid); }
+  .generate-btn:active { transform: scale(0.98); }
+  .generate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* RESULTS */
+  #results { display: none; }
+
+  .results-header {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px 6px 0 0;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: none;
+  }
+
+  .results-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .results-title::before {
+    content: '';
+    width: 3px;
+    height: 18px;
+    background: var(--success);
+    border-radius: 2px;
+  }
+
+  /* EMAIL CARDS */
+  .email-card {
+    border: 1px solid var(--border);
+    border-top: none;
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .email-card:last-child { border-radius: 0 0 6px 6px; }
+
+  .email-card-header {
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: background 0.15s;
+    user-select: none;
+  }
+
+  .email-card-header:hover { background: var(--surface2); }
+  .email-card-header.open { border-bottom-color: var(--border); background: var(--surface2); }
+
+  .email-card-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .email-client { font-weight: 500; font-size: 14px; }
+  .email-amount { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--accent); font-weight: 600; }
+
+  .email-card-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .chevron {
+    transition: transform 0.2s;
+    color: var(--muted);
+  }
+
+  .chevron.open { transform: rotate(180deg); }
+
+  .email-body-wrap { display: none; }
+  .email-body-wrap.open { display: block; }
+
+  .email-meta {
+    padding: 12px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    gap: 4px;
+  }
+
+  .email-meta-row {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+  }
+
+  .email-meta-label {
+    color: var(--muted);
+    width: 50px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .email-meta-value { color: var(--text); }
+
+  .email-body-text {
+    padding: 20px 24px;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+  }
+
+  .email-actions {
+    padding: 12px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex;
+    gap: 8px;
+  }
+
+  .action-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .action-btn:hover { border-color: var(--text); color: var(--text); }
+  .action-btn.primary { border-color: var(--accent); color: var(--accent); }
+  .action-btn.primary:hover { background: var(--accent-dim); }
+
+  /* LOADING */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(12,15,20,0.92);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .loading-overlay.active { display: flex; }
+
+  .fire-spinner {
+    font-size: 40px;
+    animation: flicker 0.8s infinite alternate;
+  }
+
+  @keyframes flicker {
+    from { opacity: 0.7; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1.05); }
+  }
+
+  .loading-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .loading-sub { font-size: 13px; color: var(--muted); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .empty-icon { font-size: 32px; margin-bottom: 8px; opacity: 0.4; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 680px) {
+    .topbar { padding: 0 16px; }
+    .main { padding: 24px 16px 60px; }
+    .form-grid { grid-template-columns: 1fr 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading">
+  <div class="fire-spinner">🔥</div>
+  <div class="loading-title">Generating Follow-Up Emails</div>
+  <div class="loading-sub">Drafting professional collections sequences...</div>
+</div>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">🔥</div>
+    <div>
+      <div class="logo-text">FireX Protection Systems</div>
+      <div class="logo-sub">AR Collections Manager</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="status-dot"></div>
+    Active
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="page-header">
+    <div class="page-title">Accounts Receivable <span>Follow-Up</span></div>
+    <div class="page-subtitle">Enter overdue invoices weekly. The system drafts professional follow-up emails matched to each invoice's aging level — ready to review and send.</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Invoices</div>
+      <div class="stat-value white" id="stat-total">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total AR Outstanding</div>
+      <div class="stat-value red" id="stat-amount">$0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Critical (45+ Days)</div>
+      <div class="stat-value red" id="stat-critical">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Emails to Send</div>
+      <div class="stat-value green" id="stat-emails">0</div>
+    </div>
+  </div>
+
+  <!-- ADD INVOICE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Add Overdue Invoice</div>
+      <span style="font-size:11px;color:var(--muted)">Pull from QuickBooks AR Aging Report</span>
+    </div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Client / Company Name</label>
+          <input type="text" id="inp-client" placeholder="Ridgeland Commerce Center LLC" />
+        </div>
+        <div class="form-group">
+          <label>Invoice Amount ($)</label>
+          <input type="number" id="inp-amount" placeholder="4500" />
+        </div>
+        <div class="form-group">
+          <label>Days Outstanding</label>
+          <select id="inp-days">
+            <option value="14">14 Days</option>
+            <option value="21">21 Days</option>
+            <option value="30">30 Days</option>
+            <option value="45">45 Days</option>
+            <option value="60">60+ Days</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Invoice # (optional)</label>
+          <input type="text" id="inp-invoice" placeholder="INV-2024-0142" />
+        </div>
+        <div class="form-group" style="grid-column: 1 / 3">
+          <label>Client Contact Email</label>
+          <input type="email" id="inp-email" placeholder="property@ridgelandcommerce.com" />
+        </div>
+        <div class="form-group">
+          <label>Service Description</label>
+          <input type="text" id="inp-service" placeholder="Annual sprinkler inspection" />
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-end;">
+          <button class="add-btn" onclick="addInvoice()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Invoice
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVOICE LIST -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Current Week Queue</div>
+      <span style="font-size:11px;color:var(--muted)" id="queue-count">0 invoices</span>
+    </div>
+    <div id="invoice-list">
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        No invoices added yet. Pull your AR Aging Report from QuickBooks and add overdue invoices above.
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATE BAR -->
+  <div class="generate-bar">
+    <div>
+      <div class="generate-count" id="gen-count-label">0 invoices ready</div>
+      <div class="generate-info">Generate professional follow-up emails for all invoices in your queue</div>
+    </div>
+    <button class="generate-btn" onclick="generateEmails()" id="gen-btn" disabled>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      Generate Follow-Up Emails
+    </button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <div class="results-header">
+      <div class="results-title">Follow-Up Emails — Ready to Send</div>
+      <span style="font-size:12px;color:var(--muted)" id="results-date"></span>
+    </div>
+    <div id="emails-container"></div>
+  </div>
+
+</div>
+
+<script>
+  let invoices = [];
+
+  const agingConfig = {
+    14: { label: '14 Days', class: 'aging-14', stage: 'First Reminder' },
+    21: { label: '21 Days', class: 'aging-21', stage: 'Second Notice' },
+    30: { label: '30 Days', class: 'aging-30', stage: 'Firm Follow-Up' },
+    45: { label: '45 Days', class: 'aging-45', stage: 'Formal Notice' },
+    60: { label: '60+ Days', class: 'aging-60', stage: 'Final Demand' },
+  };
+
+  function fmt(n) {
+    return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function updateStats() {
+    const total = invoices.length;
+    const amount = invoices.reduce((s, i) => s + i.amount, 0);
+    const critical = invoices.filter(i => i.days >= 45).length;
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-amount').textContent = fmt(amount);
+    document.getElementById('stat-critical').textContent = critical;
+    document.getElementById('stat-emails').textContent = total;
+    document.getElementById('queue-count').textContent = total + ' invoice' + (total !== 1 ? 's' : '');
+    document.getElementById('gen-count-label').textContent = total + ' invoice' + (total !== 1 ? 's' : '') + ' ready';
+    document.getElementById('gen-btn').disabled = total === 0;
+  }
+
+  function addInvoice() {
+    const client = document.getElementById('inp-client').value.trim();
+    const amount = parseFloat(document.getElementById('inp-amount').value);
+    const days = parseInt(document.getElementById('inp-days').value);
+    const invoiceNum = document.getElementById('inp-invoice').value.trim();
+    const email = document.getElementById('inp-email').value.trim();
+    const service = document.getElementById('inp-service').value.trim();
+
+    if (!client || !amount) {
+      alert('Please enter at least a client name and invoice amount.');
+      return;
+    }
+
+    const id = Date.now();
+    invoices.push({ id, client, amount, days, invoiceNum, email, service });
+
+    renderInvoices();
+    updateStats();
+
+    // Clear inputs
+    document.getElementById('inp-client').value = '';
+    document.getElementById('inp-amount').value = '';
+    document.getElementById('inp-invoice').value = '';
+    document.getElementById('inp-email').value = '';
+    document.getElementById('inp-service').value = '';
+    document.getElementById('inp-days').value = '14';
+    document.getElementById('inp-client').focus();
+  }
+
+  function removeInvoice(id) {
+    invoices = invoices.filter(i => i.id !== id);
+    renderInvoices();
+    updateStats();
+  }
+
+  function renderInvoices() {
+    const container = document.getElementById('invoice-list');
+    if (invoices.length === 0) {
+      container.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div>No invoices added yet. Pull your AR Aging Report from QuickBooks and add overdue invoices above.</div>`;
+      return;
+    }
+
+    const table = `<table class="invoice-table">
+      <thead><tr>
+        <th>Client</th>
+        <th>Amount</th>
+        <th>Aging</th>
+        <th>Stage</th>
+        <th>Service</th>
+        <th>Email</th>
+        <th></th>
+      </tr></thead>
+      <tbody>
+        ${invoices.map(inv => {
+          const cfg = agingConfig[inv.days];
+          return `<tr>
+            <td>
+              <div class="client-name">${inv.client}</div>
+              ${inv.invoiceNum ? `<div class="invoice-num">${inv.invoiceNum}</div>` : ''}
+            </td>
+            <td><span class="amount">${fmt(inv.amount)}</span></td>
+            <td><span class="aging-badge ${cfg.class}">${cfg.label}</span></td>
+            <td style="font-size:12px;color:var(--muted)">${cfg.stage}</td>
+            <td style="font-size:12px;color:var(--muted)">${inv.service || '—'}</td>
+            <td style="font-size:12px;color:var(--muted)">${inv.email || '—'}</td>
+            <td><button class="remove-btn" onclick="removeInvoice(${inv.id})">×</button></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+    container.innerHTML = table;
+  }
+
+  async function generateEmails() {
+    if (invoices.length === 0) return;
+
+    document.getElementById('loading').classList.add('active');
+
+    const invoiceDetails = invoices.map((inv, i) => {
+      const cfg = agingConfig[inv.days];
+      return `Invoice ${i+1}:
+- Client: ${inv.client}
+- Amount: ${fmt(inv.amount)}
+- Days Outstanding: ${inv.days}
+- Stage: ${cfg.stage}
+- Invoice #: ${inv.invoiceNum || 'not provided'}
+- Service: ${inv.service || 'fire suppression services'}
+- Contact Email: ${inv.email || 'not provided'}`;
+    }).join('\n\n');
+
+    const prompt = `You are a professional collections assistant for FireX Protection Systems LLC, a commercial fire suppression company. Generate individual follow-up emails for each overdue invoice listed below.
+
+COMPANY: FireX Protection Systems LLC
+FROM: Joel (Owner)
+
+TONE GUIDE BY STAGE:
+- First Reminder (14 days): Warm, friendly, assumes oversight. "Just a friendly reminder."
+- Second Notice (21 days): Professional, slightly more direct. References first reminder was sent.
+- Firm Follow-Up (30 days): Direct and professional. Clear request for immediate payment or payment plan discussion.
+- Formal Notice (45 days): Formal business tone. States account is significantly past due. Requests immediate contact.
+- Final Demand (60+ days): Very formal. States this is final notice before account is referred to collections. Firm but professional.
+
+INVOICES:
+${invoiceDetails}
+
+For EACH invoice write a professional email. Format each one starting with "--- EMAIL: [CLIENT NAME] ---" on its own line.
+
+Each email should:
+1. Have a clear subject line labeled "Subject:" 
+2. Open with appropriate greeting
+3. Reference the specific invoice amount and service performed
+4. Include invoice number if provided
+5. Be appropriately toned for the aging stage
+6. Include clear payment instructions: "Please remit payment to FireX Protection Systems LLC" 
+7. Offer to address any questions or concerns
+8. Close professionally from Joel at FireX Protection Systems
+9. Be concise — no more than 150 words per email
+
+Do not add commentary outside the emails. Separate each email clearly.`;
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 4000,
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error('API Error: ' + JSON.stringify(errData));
+      }
+
+      const data = await response.json();
+      const fullText = data.content && data.content[0] && data.content[0].text
+        ? data.content[0].text
+        : '';
+
+      document.getElementById('loading').classList.remove('active');
+
+      // Parse emails
+      const emailBlocks = fullText.split(/---\s*EMAIL:\s*/i).filter(Boolean);
+
+      const container = document.getElementById('emails-container');
+      container.innerHTML = '';
+
+      emailBlocks.forEach((block, i) => {
+        const lines = block.split('\n');
+        const clientLine = lines[0].replace(/---/g, '').trim();
+        const rest = lines.slice(1).join('\n').trim();
+
+        // Extract subject
+        const subjectMatch = rest.match(/Subject:\s*(.+)/i);
+        const subject = subjectMatch ? subjectMatch[1].trim() : `Invoice Follow-Up — FireX Protection Systems`;
+        const bodyText = rest.replace(/Subject:\s*.+\n?/i, '').trim();
+
+        const inv = invoices[i] || invoices.find(inv => block.toLowerCase().includes(inv.client.toLowerCase()));
+        const cfg = inv ? agingConfig[inv.days] : agingConfig[14];
+        const toEmail = inv?.email || '';
+
+        const card = document.createElement('div');
+        card.className = 'email-card';
+        card.innerHTML = `
+          <div class="email-card-header" onclick="toggleEmail(this)">
+            <div class="email-card-left">
+              <span class="aging-badge ${cfg.class}">${cfg.label}</span>
+              <span class="email-client">${clientLine || 'Client ' + (i+1)}</span>
+              ${inv ? `<span class="email-amount">${fmt(inv.amount)}</span>` : ''}
+            </div>
+            <div class="email-card-right">
+              <span style="font-size:11px;color:var(--muted)">${cfg.stage}</span>
+              <svg class="chevron" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="email-body-wrap">
+            <div class="email-meta">
+              <div class="email-meta-row">
+                <span class="email-meta-label">To</span>
+                <span class="email-meta-value">${toEmail || 'See client contact'}</span>
+              </div>
+              <div class="email-meta-row">
+                <span class="email-meta-label">Subject</span>
+                <span class="email-meta-value">${subject}</span>
+              </div>
+            </div>
+            <div class="email-body-text">${bodyText}</div>
+            <div class="email-actions">
+              <button class="action-btn primary" onclick="copyEmail(this, \`${subject.replace(/`/g,'\\`')}\`, \`${bodyText.replace(/`/g,'\\`')}\`)">Copy Email</button>
+              ${toEmail ? `<button class="action-btn" onclick="openEmail('${toEmail}', \`${subject.replace(/`/g,'\\`')}\`, \`${bodyText.replace(/`/g,'\\`')}\`)">Open in Email Client</button>` : ''}
+              <button class="action-btn" onclick="markSent(this)">Mark as Sent</button>
+            </div>
+          </div>`;
+        container.appendChild(card);
+      });
+
+      document.getElementById('results-date').textContent = 'Generated ' + new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (err) {
+      document.getElementById('loading').classList.remove('active');
+      alert('Error: ' + err.message);
+      console.error(err);
+    }
+  }
+
+  function toggleEmail(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.chevron');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+    header.classList.toggle('open', !isOpen);
+  }
+
+  function copyEmail(btn, subject, body) {
+    const full = `Subject: ${subject}\n\n${body}`;
+    navigator.clipboard.writeText(full).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy Email', 2000);
+    });
+  }
+
+  function openEmail(to, subject, body) {
+    window.open(`mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+  }
+
+  function markSent(btn) {
+    const card = btn.closest('.email-card');
+    card.style.opacity = '0.4';
+    btn.textContent = '✓ Sent';
+    btn.style.color = 'var(--success)';
+    btn.style.borderColor = 'var(--success)';
+    btn.disabled = true;
+  }
+
+  // Init — pre-load a demo invoice for Joel's demo
+  invoices.push({
+    id: Date.now(),
+    client: 'Ridgeland Commerce Center LLC',
+    amount: 4750,
+    days: 30,
+    invoiceNum: 'INV-2024-0089',
+    email: 'accounting@ridgelandcommerce.com',
+    service: 'Annual fire suppression inspection & certification'
+  });
+  invoices.push({
+    id: Date.now() + 1,
+    client: 'Madison Medical Plaza',
+    amount: 8200,
+    days: 45,
+    invoiceNum: 'INV-2024-0076',
+    email: 'billing@madisonmedical.com',
+    service: 'Sprinkler system installation — Suite 201-210'
+  });
+  renderInvoices();
+  updateStats();
+</script>
+</body>
+</html>
